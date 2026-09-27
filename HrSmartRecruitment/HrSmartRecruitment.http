@@ -1,0 +1,6 @@
+@HrSmartRecruitment_HostAddress = http://localhost:5030
+
+GET {{HrSmartRecruitment_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using SmartRecruitment.Domain.Entities;
 using SmartRecruitment.Domain.Interfaces;
+using SmartRecruitment.Infrastructure.Presistence.Data;
 using SmartRecruitment.Infrastructure.Repository;
 using System.Collections;
 namespace SmartRecruitment.Infrastructure.Repositories;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmartRecruitment.Domain.Entities.Auth;
+using System;
 using System.Collections.Generic;
 namespace SmartRecruitment.Domain.Entities;
 
@@ -18,4 +19,10 @@ public partial class User
     public DateTime CreatedAt { get; set; }
 
     public virtual ICollection<Hr> Hrs { get; set; } = new List<Hr>();
+    public ICollection<RefreshToken> RefreshTokens { get; set; }
+        = new List<RefreshToken>();
+
+    public ICollection<PasswordResetToken> PasswordResetTokens { get; set; }
+        = new List<PasswordResetToken>();
+
 }

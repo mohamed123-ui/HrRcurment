@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using SmartRecruitment.Application.Contract;
 using SmartRecruitment.Application.Interfaces;
 using SmartRecruitment.Application.Services;
 using SmartRecruitment.Domain.Interfaces;
@@ -16,6 +17,7 @@ namespace SmartRecruitment.Application.ApplicationExstintion
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IJobService, JobIServices>();
+            services.AddScoped<IAuthService, AuthService>();
             // Register all validators from the Application assembly automatically
             services.AddValidatorsFromAssembly(typeof(ApplicationDependencies).Assembly);
 

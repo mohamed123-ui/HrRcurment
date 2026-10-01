@@ -32,15 +32,19 @@ namespace SmartRecruitment.Application.Services
         {
             //validation
             var validationResult = await _createJobValidator.ValidateAsync(dto, cancellationToken);
-            if (!validationResult.IsValid)
-            {
+         
                 if (!validationResult.IsValid)
                 {
                     var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
                     return ResultData<JobResponseDto>.Failure(errors);
                 }
-            }
+            var hrList = await _unitOfWork.Repository<Hr>()
+           .FindAsync(h => h.Id == dto.Hrid, cancellationToken);
 
+            if (!hrList.Any())
+            {
+                return ResultData<JobResponseDto>.Failure($"HR with ID {dto.Hrid} does not exist.");
+            }
             var existingJobs = await _unitOfWork.Repository<Job>()
               .FindAsync(j => j.Title.ToLower() == dto.Title.ToLower(), cancellationToken);
 
@@ -48,6 +52,8 @@ namespace SmartRecruitment.Application.Services
             {
                 return ResultData<JobResponseDto>.Failure($"A job with the title '{dto.Title}' already exists.");
             }
+            // Inside JobServices.cs -> CreateJobAsync
+         
             //create a new job entity
             var job = new Job
             {

@@ -1,9 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using SmartRecruitment.Domain.Interfaces;
+using SmartRecruitment.Infrastructure.Presistence.Data;
 using SmartRecruitment.Infrastructure.Repositories;
 using SmartRecruitment.Infrastructure.Repository;
+using System.Text;
 
 namespace SmartRecruitment.Infrastructure.Extensions;
 
@@ -16,7 +20,29 @@ public static class InfrastructureDependencies
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        // 3. JWT Authentication Configuration
+        var jwtKey = configuration["Jwt:Key"]
+            ?? throw new InvalidOperationException("JWT Key is missing.");
 
-        return services;
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+
+                ValidIssuer = configuration["Jwt:Issuer"],
+                ValidAudience = configuration["Jwt:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+            };
+        });
+            return services;
     }
 }

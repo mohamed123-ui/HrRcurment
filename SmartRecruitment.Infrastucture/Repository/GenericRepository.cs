@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SmartRecruitment.Domain.Interfaces;
+using SmartRecruitment.Infrastructure.Presistence.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;

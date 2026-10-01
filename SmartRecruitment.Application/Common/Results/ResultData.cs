@@ -4,7 +4,7 @@ public class ResultData
 {
     protected ResultData(bool isSuccess, IReadOnlyList<string>? errors)
     {
-        IsSuccess = isSuccess;
+        IsSuccess = isSuccess; //
         Errors = errors ?? [];
     }
 

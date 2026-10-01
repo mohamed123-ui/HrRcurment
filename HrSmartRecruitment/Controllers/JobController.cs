@@ -10,7 +10,6 @@ namespace HrSmartRecruitment.Controllers
     public class JobController : ControllerBase
     {
         private readonly IJobService _service;
-
         public JobController(IJobService service)
         {
           _service = service;

@@ -15,7 +15,7 @@ namespace SmartRecruitment.Domain.Interfaces
         Task<IReadOnlyList<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
         Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default);
         void Update(TEntity entity);
-
+        Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
         void Delete(TEntity entity);
 
     }

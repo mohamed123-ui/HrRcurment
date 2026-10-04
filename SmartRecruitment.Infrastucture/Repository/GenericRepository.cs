@@ -36,6 +36,11 @@ namespace SmartRecruitment.Infrastructure.Repository
             return await _context.Set<TEntity>().Where(predicate).ToListAsync(cancellationToken);
         }
 
+        public Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+        {
+            return _context.Set<TEntity>().FirstOrDefaultAsync(predicate, cancellationToken);
+        }
+
         public async Task<IReadOnlyList<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
         {
  return await _context.Set<TEntity>().ToListAsync(cancellationToken);   

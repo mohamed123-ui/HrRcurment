@@ -18,6 +18,7 @@ namespace SmartRecruitment.Application.ApplicationExstintion
         {
             services.AddScoped<IJobService, JobIServices>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IEmailService, EmailService>();
             // Register all validators from the Application assembly automatically
             services.AddValidatorsFromAssembly(typeof(ApplicationDependencies).Assembly);
 

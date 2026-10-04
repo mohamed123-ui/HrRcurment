@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SmartRecruitment.Domain.Entities;
-
+[Table("Hrs")]
 public partial class Hr
 {
     public int Id { get; set; }

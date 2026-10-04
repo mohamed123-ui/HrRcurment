@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using SmartRecruitment.Application.Contract;
 using SmartRecruitment.Domain.Interfaces;
+using SmartRecruitment.Infrastructure.InfrasturcureServices;
 using SmartRecruitment.Infrastructure.Presistence.Data;
 using SmartRecruitment.Infrastructure.Repositories;
 using SmartRecruitment.Infrastructure.Repository;
@@ -17,9 +19,9 @@ public static class InfrastructureDependencies
     {
         services.AddDbContext<SmartRecruitmentDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        services.AddScoped<IJwtService, JwtService>();
         // 3. JWT Authentication Configuration
         var jwtKey = configuration["Jwt:Key"]
             ?? throw new InvalidOperationException("JWT Key is missing.");

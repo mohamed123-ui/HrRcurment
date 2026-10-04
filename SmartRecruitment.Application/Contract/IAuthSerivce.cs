@@ -1,4 +1,5 @@
-﻿using SmartRecruitment.Application.Dtos.Auth;
+﻿using SmartRecruitment.Application.Common.Results;
+using SmartRecruitment.Application.Dtos.Auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,14 @@ namespace SmartRecruitment.Application.Contract
 {
     public interface IAuthService
     {
+        Task<ResultData<LoginResponse>> RegisterAsync(RegisterRequestDto registerRequestDto);
+        Task<ResultData<LoginResponse>> LoginAsync(LoginRequest loginRequest);
+        Task<ResultData<LoginResponse>> RefreshTokenAsync(RefreshTokenRequest refreshTokenRequest);
+        Task<ResultData> ForgotPasswordAsync(ForgotPasswordRequest forgotPasswordRequest);
+        Task<ResultData> ResetPasswordAsync(ResetPasswordRequest request);
 
-        Task<LoginResponse>RegisterAsync(RegisterRequestDto registerRequestDto);
-        Task<LoginResponse>LoginAsync(LoginRequest loginRequest);
-        Task<LoginResponse> RefreshTokenAsync(RefreshTokenRequest refreshTokenRequest);
-        Task ForgotPasswordAsync(ForgotPasswordRequest forgotPasswordRequest);
-        Task ResetPasswordAsync(ResetPasswordRequest request);
+        Task<ResultData> CreateHrByAdminAsync(CreateHrByAdmin createHrByAdmin); 
+        Task<ResultData> CreateAdminAsync(CreateAdminRequestDto createAdminRequestDto); 
 
     }
 }

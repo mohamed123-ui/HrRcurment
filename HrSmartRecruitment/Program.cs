@@ -1,5 +1,7 @@
 using SmartRecruitment.Application.ApplicationExstintion;
+using SmartRecruitment.Domain.Interfaces;
 using SmartRecruitment.Infrastructure.Extensions;
+using SmartRecruitment.Infrastructure.Seeder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +14,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var unitOfWork = services.GetRequiredService<IUnitOfWork>();
+    await DbSeeder.SeedAdminUserAsync(unitOfWork);
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

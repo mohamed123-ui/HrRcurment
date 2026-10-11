@@ -12,8 +12,8 @@ using SmartRecruitment.Infrastructure.Presistence.Data;
 namespace SmartRecruitment.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartRecruitmentDbContext))]
-    [Migration("20261003145043_AddUserEntities")]
-    partial class AddUserEntities
+    [Migration("20261009151924_updateColumnTableCandidate")]
+    partial class updateColumnTableCandidate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,7 +55,7 @@ namespace SmartRecruitment.Infrastructure.Migrations
 
                     b.HasIndex("JobId");
 
-                    b.ToTable("Application");
+                    b.ToTable("Applications");
                 });
 
             modelBuilder.Entity("SmartRecruitment.Domain.Entities.Auth.PasswordResetToken", b =>
@@ -128,64 +128,97 @@ namespace SmartRecruitment.Infrastructure.Migrations
                 {
                     b.Property<int>("CandidateId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("candidate_id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CandidateId"));
 
                     b.Property<byte>("Age")
-                        .HasColumnType("tinyint");
+                        .HasColumnType("tinyint")
+                        .HasColumnName("age");
 
                     b.Property<byte>("Certifications")
-                        .HasColumnType("tinyint");
+                        .HasColumnType("tinyint")
+                        .HasColumnName("certifications");
 
                     b.Property<double>("Cgpa")
-                        .HasColumnType("float");
+                        .HasColumnType("float")
+                        .HasColumnName("cgpa");
 
                     b.Property<string>("CompanyType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("company_type");
 
                     b.Property<string>("EducationLevel")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("education_level");
 
                     b.Property<double>("ExperienceYears")
-                        .HasColumnType("float");
+                        .HasColumnType("float")
+                        .HasColumnName("experience_years");
 
                     b.Property<byte>("Hackathons")
-                        .HasColumnType("tinyint");
+                        .HasColumnType("tinyint")
+                        .HasColumnName("hackathons");
 
                     b.Property<bool>("Hired")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnName("hired");
 
                     b.Property<byte>("Internships")
-                        .HasColumnType("tinyint");
+                        .HasColumnType("tinyint")
+                        .HasColumnName("internships");
 
                     b.Property<byte>("ProgrammingLanguages")
-                        .HasColumnType("tinyint");
+                        .HasColumnType("tinyint")
+                        .HasColumnName("programming_languages");
 
                     b.Property<byte>("Projects")
-                        .HasColumnType("tinyint");
+                        .HasColumnType("tinyint")
+                        .HasColumnName("projects");
 
                     b.Property<byte>("ResearchPapers")
-                        .HasColumnType("tinyint");
+                        .HasColumnType("tinyint")
+                        .HasColumnName("research_papers");
 
                     b.Property<short>("ResumeLengthWords")
-                        .HasColumnType("smallint");
+                        .HasColumnType("smallint")
+                        .HasColumnName("resume_length_words");
 
                     b.Property<double>("SkillsScore")
-                        .HasColumnType("float");
+                        .HasColumnType("float")
+                        .HasColumnName("skills_score");
 
                     b.Property<double>("SoftSkillsScore")
-                        .HasColumnType("float");
+                        .HasColumnType("float")
+                        .HasColumnName("soft_skills_score");
 
                     b.Property<string>("UniversityTier")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("university_tier");
 
                     b.HasKey("CandidateId");
 
-                    b.ToTable("Candidate");
+                    b.ToTable("Candidates");
+                });
+
+            modelBuilder.Entity("SmartRecruitment.Domain.Entities.CandidateUserLink", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CandidateId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId");
+
+                    b.HasIndex("CandidateId")
+                        .IsUnique();
+
+                    b.ToTable("CandidateUserLinks");
                 });
 
             modelBuilder.Entity("SmartRecruitment.Domain.Entities.Hr", b =>
@@ -207,7 +240,7 @@ namespace SmartRecruitment.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Hr");
+                    b.ToTable("Hrs");
                 });
 
             modelBuilder.Entity("SmartRecruitment.Domain.Entities.Job", b =>
@@ -243,7 +276,7 @@ namespace SmartRecruitment.Infrastructure.Migrations
 
                     b.HasIndex("Hrid");
 
-                    b.ToTable("Job");
+                    b.ToTable("Jobs");
                 });
 
             modelBuilder.Entity("SmartRecruitment.Domain.Entities.User", b =>
@@ -315,6 +348,25 @@ namespace SmartRecruitment.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SmartRecruitment.Domain.Entities.CandidateUserLink", b =>
+                {
+                    b.HasOne("SmartRecruitment.Domain.Entities.Candidate", "Candidate")
+                        .WithOne("UserLink")
+                        .HasForeignKey("SmartRecruitment.Domain.Entities.CandidateUserLink", "CandidateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SmartRecruitment.Domain.Entities.User", "User")
+                        .WithOne()
+                        .HasForeignKey("SmartRecruitment.Domain.Entities.CandidateUserLink", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Candidate");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("SmartRecruitment.Domain.Entities.Hr", b =>
                 {
                     b.HasOne("SmartRecruitment.Domain.Entities.User", "User")
@@ -340,6 +392,8 @@ namespace SmartRecruitment.Infrastructure.Migrations
             modelBuilder.Entity("SmartRecruitment.Domain.Entities.Candidate", b =>
                 {
                     b.Navigation("Applications");
+
+                    b.Navigation("UserLink");
                 });
 
             modelBuilder.Entity("SmartRecruitment.Domain.Entities.Hr", b =>

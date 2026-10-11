@@ -33,6 +33,22 @@ public partial class SmartRecruitmentDbContext : DbContext
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getutcdate())");
             entity.Property(e => e.Token).HasMaxLength(500);
         });
+        modelBuilder.Entity<CandidateUserLink>(entity =>
+        {
+            entity.HasKey(cul => cul.UserId);
+
+            entity.HasIndex(cul => cul.CandidateId).IsUnique();
+
+            entity.HasOne(cul => cul.User)
+                  .WithOne()
+                  .HasForeignKey<CandidateUserLink>(cul => cul.UserId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(cul => cul.Candidate)
+                  .WithOne(c => c.UserLink)
+                  .HasForeignKey<CandidateUserLink>(cul => cul.CandidateId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
 
         OnModelCreatingPartial(modelBuilder);
     }

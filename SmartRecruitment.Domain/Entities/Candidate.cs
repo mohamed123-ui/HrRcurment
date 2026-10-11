@@ -1,44 +1,69 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SmartRecruitment.Domain.Entities;
-[Table("Candidates")]
-public partial class Candidate
+namespace SmartRecruitment.Domain.Entities
 {
-    public int CandidateId { get; set; }
+    [Table("Candidates")]
+    public partial class Candidate
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 
-    public byte Age { get; set; }
+        [Column("candidate_id")]
+        public int CandidateId { get; set; }
 
-    public string EducationLevel { get; set; } = null!;
+        [Column("age")]
+        public byte Age { get; set; }
 
-    public string UniversityTier { get; set; } = null!;
+        [Column("education_level")]
+        public string EducationLevel { get; set; } = null!;
 
-    public double Cgpa { get; set; }
+        [Column("university_tier")]
+        public string UniversityTier { get; set; } = null!;
 
-    public byte Internships { get; set; }
+        [Column("cgpa")]
+        public double Cgpa { get; set; }
 
-    public byte Projects { get; set; }
+        [Column("internships")]
+        public byte Internships { get; set; }
 
-    public byte ProgrammingLanguages { get; set; }
+        [Column("projects")]
+        public byte Projects { get; set; }
 
-    public byte Certifications { get; set; }
+        [Column("programming_languages")]
+        public byte ProgrammingLanguages { get; set; }
 
-    public double ExperienceYears { get; set; }
+        [Column("certifications")]
+        public byte Certifications { get; set; }
 
-    public byte Hackathons { get; set; }
+        [Column("experience_years")]
+        public double ExperienceYears { get; set; }
 
-    public byte ResearchPapers { get; set; }
+        [Column("hackathons")]
+        public byte Hackathons { get; set; }
 
-    public double SkillsScore { get; set; }
+        [Column("research_papers")]
+        public byte ResearchPapers { get; set; }
 
-    public bool Hired { get; set; }
+        [Column("skills_score")]
+        public double SkillsScore { get; set; }
 
-    public double SoftSkillsScore { get; set; }
+        [Column("hired")]
+        public bool Hired { get; set; }
 
-    public short ResumeLengthWords { get; set; }
+        [Column("soft_skills_score")]
+        public double SoftSkillsScore { get; set; }
 
-    public string CompanyType { get; set; } = null!;
+        [Column("resume_length_words")]
+        public short ResumeLengthWords { get; set; }
 
-    public virtual ICollection<Application> Applications { get; set; } = new List<Application>();
+        [Column("company_type")]
+        public string CompanyType { get; set; } = null!;
+
+        public CandidateUserLink? UserLink { get; set; }
+
+        public virtual ICollection<Application> Applications { get; set; } = new List<Application>();
+    }
 }

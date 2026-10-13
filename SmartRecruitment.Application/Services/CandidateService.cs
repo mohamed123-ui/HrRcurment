@@ -156,6 +156,13 @@ namespace SmartRecruitment.Application.Services
                 await file.CopyToAsync(stream, cancellationToken);
             }
 
+            // Feature 4: remember where the CV lives so the HR side can preview/download it.
+            candidate.CvFileName = file.FileName;
+            candidate.CvContentType = file.ContentType;
+            candidate.CvSizeBytes = file.Length;
+            candidate.CvFilePath = filePath;
+            _unitOfWork.Repository<Candidate>().Update(candidate);
+
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return ResultData.Success();
@@ -190,7 +197,9 @@ namespace SmartRecruitment.Application.Services
                     SkillsScore = dto.SkillsScore,
                     SoftSkillsScore = dto.SoftSkillsScore,
                     ResumeLengthWords = dto.ResumeLengthWords,
-                    CompanyType = dto.CompanyType
+                    CompanyType = dto.CompanyType,
+                    Skills = dto.Skills,
+                    Bio = dto.Bio
                 };
                 await _unitOfWork.Repository<Candidate>().AddAsync(candidate, cancellationToken);
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
@@ -223,6 +232,8 @@ namespace SmartRecruitment.Application.Services
                     candidate.SoftSkillsScore = dto.SoftSkillsScore;
                     candidate.ResumeLengthWords = dto.ResumeLengthWords;
                     candidate.CompanyType = dto.CompanyType;
+                    candidate.Skills = dto.Skills;
+                    candidate.Bio = dto.Bio;
 
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
                 }

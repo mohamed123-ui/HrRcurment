@@ -18,7 +18,14 @@ public partial class Application
 
     public decimal? MatchScore { get; set; }
 
+    /// <summary>Human-readable feedback produced by the ML model (Feature 4).</summary>
+    public string? MlFeedback { get; set; }
+
     public virtual Candidate Candidate { get; set; } = null!;
 
     public virtual Job Job { get; set; } = null!;
+
+    public virtual ICollection<ApplicationStatusHistory> StatusHistory { get; set; } = new List<ApplicationStatusHistory>();
+
+    public virtual ICollection<Interview> Interviews { get; set; } = new List<Interview>();
 }

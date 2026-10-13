@@ -20,6 +20,9 @@ namespace SmartRecruitment.Application.ApplicationExstintion
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ICandidateService, CandidateService>();
+            services.AddScoped<IApplicantService, ApplicantService>();
+            services.AddScoped<IInterviewService, InterviewService>();
+            services.AddScoped<IDashboardService, DashboardService>();
             // Register all validators from the Application assembly automatically
             services.AddValidatorsFromAssembly(typeof(ApplicationDependencies).Assembly);
 

@@ -62,6 +62,28 @@ namespace SmartRecruitment.Domain.Entities
         [Column("company_type")]
         public string CompanyType { get; set; } = null!;
 
+        // ---- Feature 4 (HR side) additive fields ----
+        // Human profile data used by the HR applicants screens.
+        // Identity (name/email) stays on the linked User (Feature 3 model).
+
+        [Column("skills")]
+        public string? Skills { get; set; }
+
+        [Column("bio")]
+        public string? Bio { get; set; }
+
+        [Column("cv_file_name")]
+        public string? CvFileName { get; set; }
+
+        [Column("cv_content_type")]
+        public string? CvContentType { get; set; }
+
+        [Column("cv_size_bytes")]
+        public long? CvSizeBytes { get; set; }
+
+        [Column("cv_file_path")]
+        public string? CvFilePath { get; set; }
+
         public CandidateUserLink? UserLink { get; set; }
 
         public virtual ICollection<Application> Applications { get; set; } = new List<Application>();

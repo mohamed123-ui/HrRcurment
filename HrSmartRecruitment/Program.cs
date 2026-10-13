@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
-// 1. ÅÖÇÝÉ ÓíÇÓÉ ÇáÜ CORS ááÓãÇÍ ááÝÑæäÊ ÅäÏ ÈÇáÇÊÕÇá
+// 1. ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ CORS ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -33,6 +33,14 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var unitOfWork = services.GetRequiredService<IUnitOfWork>();
     await DbSeeder.SeedAdminUserAsync(unitOfWork);
+    try
+    {
+        await HrDemoSeeder.SeedDemoGraphAsync(unitOfWork);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Demo seeding skipped: {ex.Message}");
+    }
 }
 
 // Configure the HTTP request pipeline.
@@ -44,7 +52,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// 2. ÊÝÚíá ÇáÜ CORS Middleware (íÌÈ Ãä íßæä ÞÈá UseAuthorization æ MapControllers)
+// 2. ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ CORS Middleware (ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ UseAuthorization ï¿½ MapControllers)
 app.UseCors("AllowAll");
 
 app.UseAuthorization();

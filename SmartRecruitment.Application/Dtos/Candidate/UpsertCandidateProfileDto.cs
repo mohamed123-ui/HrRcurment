@@ -23,5 +23,8 @@ namespace SmartRecruitment.Application.Dtos.Candidate
         public double SoftSkillsScore { get; set; }
         public short ResumeLengthWords { get; set; }
         public string CompanyType { get; set; } = string.Empty;
+        /// <summary>Comma-separated skills, e.g. "Angular, TypeScript" (Feature 4).</summary>
+        public string? Skills { get; set; }
+        public string? Bio { get; set; }
     }
 }

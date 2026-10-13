@@ -31,6 +31,14 @@ namespace SmartRecruitment.Application.Validation.CandidateValidator
             RuleFor(x => x.CompanyType)
                 .NotEmpty()
                 .WithMessage("Company type is required.");
+
+            RuleFor(x => x.Skills)
+                .MaximumLength(1000)
+                .WithMessage("Skills must not exceed 1000 characters.");
+
+            RuleFor(x => x.Bio)
+                .MaximumLength(2000)
+                .WithMessage("Bio must not exceed 2000 characters.");
         }
     }
 }

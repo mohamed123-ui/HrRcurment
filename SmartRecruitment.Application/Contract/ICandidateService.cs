@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using SmartRecruitment.Application.Common.Results;
+using SmartRecruitment.Application.Dtos.Application;
 using SmartRecruitment.Application.Dtos.Candidate;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,6 @@ namespace SmartRecruitment.Application.Contract
         Task<ResultData> UpsertMyProfileAsync(int userId, UpsertCandidateProfileDto dto, CancellationToken cancellationToken);
         Task<ResultData> UploadCvAsync(int userId, IFormFile file, CancellationToken cancellationToken);
         Task<ResultData> ApplyForJobAsync(int userId, ApplyJobDto dto, CancellationToken cancellationToken);
+        Task<IEnumerable<ApplicationDto>> GetMyApplicationsAsync(int userId, CancellationToken cancellationToken);
     }
 }

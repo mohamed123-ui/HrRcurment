@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using SmartRecruitment.Application.Common.Results;
 using SmartRecruitment.Application.Contract;
+using SmartRecruitment.Application.Dtos.Application;
 using SmartRecruitment.Application.Dtos.Candidate;
 using SmartRecruitment.Domain.Entities;
 using SmartRecruitment.Domain.Interfaces;
@@ -50,6 +51,38 @@ namespace SmartRecruitment.Application.Services
             await _unitOfWork.Repository<Domain.Entities.Application>().AddAsync(application, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
             return ResultData.Success();
+        }
+
+        public async Task<IEnumerable<ApplicationDto>> GetMyApplicationsAsync(int userId, CancellationToken cancellationToken)
+        {
+            var link = await _unitOfWork.Repository<CandidateUserLink>()
+          .FirstOrDefaultAsync(x => x.UserId == userId, cancellationToken);
+
+            if (link == null)
+                return Enumerable.Empty<ApplicationDto>();
+
+        
+            var applications = await _unitOfWork.Repository<SmartRecruitment.Domain.Entities.Application>()
+                .FindAsync(x => x.CandidateId == link.CandidateId, cancellationToken);
+
+            var applicationDtos = new List<ApplicationDto>();
+
+            foreach (var app in applications)
+            {
+                var job = await _unitOfWork.Repository<SmartRecruitment.Domain.Entities.Job>()
+                    .GetByIdAsync(app.JobId, cancellationToken);
+
+                applicationDtos.Add(new ApplicationDto
+                {
+                    Id = app.Id,
+                    JobTitle = job?.Title ?? string.Empty,
+                    AppliedAt = app.AppliedAt,
+                    Status = app.Status,
+                    MatchScore = app.MatchScore ?? 0m
+                });
+            }
+
+            return applicationDtos;
         }
 
         public async Task<ResultData> GetMyProfileAsync(int userId, CancellationToken cancellationToken)

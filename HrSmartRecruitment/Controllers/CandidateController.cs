@@ -46,7 +46,6 @@ namespace HrSmartRecruitment.Controllers
             return Ok(result);
         }
 
-        // 3. رفع ملف الـ CV
         [HttpPost("upload-cv")]
         public async Task<IActionResult> UploadCv(IFormFile file, CancellationToken cancellationToken)
         {
@@ -57,7 +56,6 @@ namespace HrSmartRecruitment.Controllers
             return Ok(result);
         }
 
-        // 4. التقديم على وظيفة
         [HttpPost("apply-job")]
         public async Task<IActionResult> ApplyJob([FromBody] ApplyJobDto dto, CancellationToken cancellationToken)
         {
@@ -68,12 +66,11 @@ namespace HrSmartRecruitment.Controllers
             return Ok(result);
         }
 
-        // 5. استرجاع حالة جميع الطلبات التي قدم عليها المرشح
-        //[HttpGet("my-applications")]
-        //public async Task<IActionResult> GetMyApplications(CancellationToken cancellationToken)
-        //{
-        //    var applications = await _candidateService.GetMyApplicationsAsync(GetCurrentUserId(), cancellationToken);
-        //    return Ok(applications);
-        //}
+        [HttpGet("my-applications")]
+        public async Task<IActionResult> GetMyApplications(CancellationToken cancellationToken)
+        {
+            var applications = await _candidateService.GetMyApplicationsAsync(GetCurrentUserId(), cancellationToken);
+            return Ok(applications);
+        }
     }
 }

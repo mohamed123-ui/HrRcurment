@@ -1,0 +1,20 @@
+@use '../login/login.scss';
+.register-art .art-copy {
+  margin-top: 22vh;
+}
+.register-points {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: #d5deee;
+  margin-top: 35px;
+  font-size: 14px;
+}
+.register-points span:first-child {
+  color: #8bb3ff;
+}
+@media (max-width: 800px) {
+  .register-art {
+    display: none;
+  }
+}

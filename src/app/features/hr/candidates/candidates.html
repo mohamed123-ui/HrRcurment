@@ -1,0 +1,119 @@
+<div class="candidates-shell" [dir]="language.isArabic() ? 'rtl' : 'ltr'">
+  <header class="page-header">
+    <a class="brand" routerLink="/hr/dashboard"><span>S</span> SmartRecruitment</a>
+    <nav>
+      <a routerLink="/hr/dashboard">Dashboard</a>
+      <a routerLink="/hr/jobs">Manage jobs</a>
+      <a class="active">Candidates</a>
+      <a routerLink="/hr/interviews">Interviews</a>
+    </nav>
+    <app-sign-out />
+  </header>
+
+  <main class="page-content">
+    <section class="intro-row">
+      <div>
+        <span class="eyebrow">TALENT PIPELINE</span>
+        <h1>Candidates</h1>
+        <p>Review applicants, inspect their profiles, and manage decisions.</p>
+      </div>
+    </section>
+
+    <div *ngIf="notice" class="message success">{{ notice }}</div>
+    <div *ngIf="error" class="message error">{{ error }}</div>
+
+    <section class="panel filters">
+      <label
+        >Job<select [(ngModel)]="selectedJobId" (ngModelChange)="loadApplicants()">
+          <option *ngFor="let job of jobs" [ngValue]="job.id">{{ job.title }}</option>
+        </select></label
+      >
+      <label
+        >Search<input
+          [(ngModel)]="search"
+          (keyup.enter)="loadApplicants()"
+          placeholder="Name or email"
+      /></label>
+      <label
+        >Status<select [(ngModel)]="status">
+          <option value="">All statuses</option>
+          <option value="Applied">Applied</option>
+          <option value="Shortlisted">Shortlisted</option>
+          <option value="Rejected">Rejected</option>
+          <option value="Accepted">Accepted</option>
+        </select></label
+      >
+      <button class="primary-button" type="button" (click)="loadApplicants()">Apply filters</button>
+    </section>
+
+    <section class="panel">
+      <div class="table-head">
+        <span>Candidate</span><span>Experience</span><span>Match</span><span>Status</span
+        ><span>Action</span>
+      </div>
+      <div *ngIf="loading" class="empty">Loading candidates...</div>
+      <div *ngIf="!loading && !applicants.length" class="empty">
+        No candidates found for this job.
+      </div>
+      <div class="table-row" *ngFor="let applicant of applicants">
+        <button class="candidate-cell" type="button" (click)="openApplicant(applicant)">
+          <span class="avatar">{{ applicant.candidateName.charAt(0) }}</span
+          ><span
+            ><strong>{{ applicant.candidateName }}</strong
+            ><small>{{ applicant.email }}</small></span
+          >
+        </button>
+        <span
+          >{{ applicant.yearsOfExperience }}+ yrs<br /><small>{{
+            applicant.educationLevel
+          }}</small></span
+        >
+        <strong class="match">{{ applicant.matchScore || 0 }}%</strong>
+        <span class="status">{{ applicant.status }}</span>
+        <div class="actions">
+          <button type="button" (click)="updateStatus(applicant, 'shortlist')">Shortlist</button
+          ><button type="button" (click)="updateStatus(applicant, 'reject')">Reject</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div *ngIf="selectedApplicant" class="modal-backdrop" (click)="selectedApplicant = null">
+    <section class="modal" (click)="$event.stopPropagation()">
+      <button class="close" type="button" (click)="selectedApplicant = null">×</button>
+      <span class="eyebrow">CANDIDATE PROFILE</span>
+      <h2>{{ selectedApplicant.candidateName }}</h2>
+      <p>{{ selectedApplicant.email }} · {{ selectedApplicant.phone || 'No phone provided' }}</p>
+      <div class="detail-grid">
+        <div>
+          <small>Education</small><strong>{{ selectedApplicant.educationLevel }}</strong>
+        </div>
+        <div>
+          <small>Experience</small><strong>{{ selectedApplicant.yearsOfExperience }} years</strong>
+        </div>
+        <div>
+          <small>Match score</small><strong>{{ selectedApplicant.matchScore || 0 }}%</strong>
+        </div>
+      </div>
+      <h3>Matched skills</h3>
+      <div class="chips">
+        <span *ngFor="let skill of selectedApplicant.matchedSkills">{{ skill }}</span>
+      </div>
+      <div class="modal-actions">
+        <button
+          class="primary-button"
+          type="button"
+          (click)="updateStatus(selectedApplicant, 'shortlist')"
+        >
+          Shortlist</button
+        ><button
+          class="danger-button"
+          type="button"
+          (click)="updateStatus(selectedApplicant, 'reject')"
+        >
+          Reject
+        </button>
+      </div>
+    </section>
+  </div>
+</div>

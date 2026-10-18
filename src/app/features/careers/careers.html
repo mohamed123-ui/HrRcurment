@@ -1,0 +1,91 @@
+<div class="careers-page" [dir]="language.isArabic() ? 'rtl' : 'ltr'">
+  <header class="careers-nav">
+    <a routerLink="/" class="brand"><span class="brand-mark">S</span>SmartRecruitment</a>
+    <nav>
+      <a routerLink="/">{{ 'home' | translate }}</a
+      ><a class="active">{{ 'careers' | translate }}</a>
+    </nav>
+    <app-language-switcher /><app-sign-out *ngIf="auth.isLoggedIn()" /><a
+      *ngIf="!auth.isLoggedIn()"
+      routerLink="/auth/login"
+      class="login-link"
+      >{{ 'login' | translate }}</a
+    ><a *ngIf="auth.isLoggedIn()" routerLink="/candidate/profile" class="login-link">{{
+      'candidateProfile' | translate
+    }}</a>
+  </header>
+  <main class="careers-wrap">
+    <div class="page-intro">
+      <div>
+        <span class="eyebrow">{{ 'jobsIntro' | translate }}</span>
+        <h1>
+          {{ 'jobsTitle' | translate }}<br /><em>{{ 'jobsSubtitle' | translate }}</em>
+        </h1>
+        <p>{{ 'jobsLead' | translate }}</p>
+      </div>
+      <div class="intro-stat">
+        <b>{{ jobs.length || 0 }}</b
+        ><span>وظيفة متاحة الآن</span>
+      </div>
+    </div>
+    <div *ngIf="error && !selected" class="error page-error">{{ error }}</div>
+    <div class="toolbar">
+      <div class="search-box">
+        <span>⌕</span
+        ><input
+          [(ngModel)]="query"
+          (ngModelChange)="search()"
+          placeholder="{{ 'searchJobs' | translate }}"
+        />
+      </div>
+      <button class="filter-btn">{{ 'allDepartments' | translate }} <span>⌄</span></button
+      ><button class="filter-btn">{{ 'allLocations' | translate }} <span>⌄</span></button>
+    </div>
+    <div class="jobs-grid">
+      <button class="job-card" *ngFor="let job of filtered" (click)="open(job)">
+        <div class="job-top">
+          <span class="company-mark">S</span><span class="job-age">منذ 3 أيام</span>
+        </div>
+        <h2>{{ job.title }}</h2>
+        <p>{{ job.description }}</p>
+        <div class="job-meta">
+          <span>◷ {{ job.experienceRequired }}+ سنوات</span><span>⌖ عن بُعد / هجين</span>
+        </div>
+        <div class="job-bottom">
+          <span class="skill">{{ job.requiredSkills.split(',')[0] }}</span
+          ><span class="arrow">←</span>
+        </div>
+      </button>
+      <div *ngIf="!filtered.length" class="empty-card">لا توجد وظائف مطابقة للبحث حاليًا.</div>
+    </div>
+  </main>
+  <div class="modal-backdrop" *ngIf="selected" (click)="selected = null">
+    <section class="job-modal" (click)="$event.stopPropagation()">
+      <button class="close" (click)="selected = null">×</button
+      ><span class="eyebrow">{{ 'jobDetails' | translate }}</span>
+      <h2>{{ selected.title }}</h2>
+      <div class="modal-meta">
+        <span>خبرة {{ selected.experienceRequired }}+ سنوات</span><span>عن بُعد / هجين</span
+        ><span>دوام كامل</span>
+      </div>
+      <hr />
+      <h3>عن الدور</h3>
+      <p>{{ selected.description }}</p>
+      <h3>المهارات المطلوبة</h3>
+      <div class="skill-list">
+        <span *ngFor="let skill of selected.requiredSkills.split(',')">{{ skill.trim() }}</span>
+      </div>
+      <div *ngIf="message" class="success">✓ {{ message }}</div>
+      <div *ngIf="error" class="error">{{ error }}</div>
+      <button class="btn btn-primary apply-btn" [disabled]="applying" (click)="apply()">
+        {{
+          applying
+            ? language.isArabic()
+              ? 'جارٍ الإرسال…'
+              : 'Submitting…'
+            : ('applyJob' | translate)
+        }}
+      </button>
+    </section>
+  </div>
+</div>

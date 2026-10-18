@@ -1,0 +1,215 @@
+<div class="portal" [dir]="language.isArabic() ? 'rtl' : 'ltr'">
+  <header class="portal-top">
+    <a routerLink="/" class="brand"><span>S</span> SmartRecruitment</a>
+    <nav>
+      <a routerLink="/">{{ 'home' | translate }}</a
+      ><a routerLink="/careers">{{ 'exploreJobs' | translate }}</a
+      ><a class="active">{{ 'candidateProfile' | translate }}</a>
+    </nav>
+    <div class="user-menu">
+      <app-language-switcher /><app-sign-out></app-sign-out
+      ><span class="avatar">{{ (profile?.name || auth.getUser()?.name || 'م').charAt(0) }}</span
+      ><span>{{ profile?.name || auth.getUser()?.name }}</span>
+    </div>
+  </header>
+  <main class="portal-main">
+    <section class="profile-hero">
+      <div class="profile-person">
+        <div class="big-avatar">{{ (profile?.name || auth.getUser()?.name || 'م').charAt(0) }}</div>
+        <div>
+          <span class="eyebrow">ملف المرشح</span>
+          <h1>{{ profile?.name || auth.getUser()?.name }}</h1>
+          <p>{{ profile?.email || auth.getUser()?.email }}</p>
+        </div>
+      </div>
+      <button class="btn btn-primary" (click)="startProfileEditing()">
+        {{
+          editing && profile
+            ? language.isArabic()
+              ? 'إغلاق التعديل'
+              : 'Close editing'
+            : profile
+              ? ('editProfile' | translate)
+              : language.isArabic()
+                ? 'إنشاء الملف الشخصي'
+                : 'Create Profile'
+        }}
+      </button>
+    </section>
+    <div *ngIf="notice" class="notice success">✓ {{ notice }}</div>
+    <div *ngIf="error" class="notice error">{{ error }}</div>
+    <div class="portal-grid">
+      <section class="main-column">
+        <div class="section-card" *ngIf="editing">
+          <div class="card-title">
+            <div>
+              <span class="eyebrow">{{ 'candidateData' | translate }}</span>
+              <h2>{{ 'completeProfile' | translate }}</h2>
+            </div>
+            <span class="completion">جاهز للتقديم</span>
+          </div>
+          <div class="form-grid">
+            <label
+              >العمر
+              <input type="number" min="18" max="80" [(ngModel)]="form.age" name="age" />
+            </label>
+            <label
+              >المستوى التعليمي
+              <select [(ngModel)]="form.educationLevel" name="educationLevel">
+                <option value="">اختر المستوى التعليمي</option>
+                <option value="High School">High School</option>
+                <option value="Bachelor">Bachelor</option>
+                <option value="Master">Master</option>
+                <option value="PhD">PhD</option>
+              </select>
+            </label>
+            <label>
+              الجامعة / تصنيف الجامعة
+              <input
+                type="text"
+                [(ngModel)]="form.universityTier"
+                name="universityTier"
+                placeholder="مثال: Cairo University أو Tier 1"
+              />
+            </label>
+            <label
+              >المعدل التراكمي CGPA
+              <input
+                type="number"
+                min="0"
+                max="4"
+                step="0.01"
+                [(ngModel)]="form.cgpa"
+                name="cgpa"
+              />
+            </label>
+            <label
+              >سنوات الخبرة
+              <input
+                type="number"
+                min="0"
+                step="0.5"
+                [(ngModel)]="form.experienceYears"
+                name="experienceYears"
+              />
+            </label>
+            <label
+              >عدد التدريبات
+              <input type="number" min="0" [(ngModel)]="form.internships" name="internships" />
+            </label>
+            <label
+              >عدد المشاريع
+              <input type="number" min="0" [(ngModel)]="form.projects" name="projects" />
+            </label>
+            <label
+              >لغات البرمجة
+              <input
+                type="number"
+                min="0"
+                [(ngModel)]="form.programmingLanguages"
+                name="programmingLanguages"
+              />
+            </label>
+            <label
+              >الشهادات
+              <input
+                type="number"
+                min="0"
+                [(ngModel)]="form.certifications"
+                name="certifications"
+              />
+            </label>
+            <label
+              >الهاكاثونات
+              <input type="number" min="0" [(ngModel)]="form.hackathons" name="hackathons" />
+            </label>
+            <label
+              >تقييم المهارات %
+              <input
+                type="number"
+                min="0"
+                max="100"
+                [(ngModel)]="form.skillsScore"
+                name="skillsScore"
+              />
+            </label>
+            <label
+              >نوع الشركة المستهدف
+              <select [(ngModel)]="form.companyType" name="companyType">
+                <option value="">اختر نوع الشركة</option>
+                <option value="Product">Product</option>
+                <option value="Technology">Technology</option>
+                <option value="Startup">Startup</option>
+                <option value="Consulting">Consulting</option>
+              </select>
+            </label>
+            <label class="full"
+              >المهارات
+              <input [(ngModel)]="form.skills" name="skills" placeholder="Angular, C#, UX" />
+            </label>
+            <label class="full"
+              >نبذة عنك
+              <textarea [(ngModel)]="form.bio" name="bio" rows="4"></textarea>
+            </label>
+          </div>
+          <button class="btn btn-primary" (click)="save()" [disabled]="saving">
+            {{ saving ? 'جارٍ الحفظ…' : profile ? 'Update Profile' : 'Create Profile' }}
+          </button>
+        </div>
+        <div class="section-card">
+          <div class="card-title">
+            <div>
+              <span class="eyebrow">{{ language.isArabic() ? 'نشاطك' : 'Your activity' }}</span>
+              <h2>{{ 'applications' | translate }}</h2>
+            </div>
+            <a routerLink="/careers">تصفح الوظائف ←</a>
+          </div>
+          <div *ngIf="!applications.length" class="empty">
+            لم تقدّم على أي وظيفة بعد. <a routerLink="/careers">ابدأ الاستكشاف</a>
+          </div>
+          <div class="application" *ngFor="let app of applications">
+            <div class="company-mark">S</div>
+            <div class="application-info">
+              <b>{{ app.jobTitle }}</b
+              ><small>تم التقديم في {{ app.appliedAt | date: 'dd MMM yyyy' }}</small>
+            </div>
+            <span class="status" [class.success-status]="app.status === 'Accepted'">{{
+              app.status
+            }}</span
+            ><span class="match">{{ app.matchScore || '—' }}%<small>مطابقة</small></span>
+          </div>
+        </div>
+      </section>
+      <aside class="side-column">
+        <div class="section-card cv-card">
+          <div class="cv-icon">↥</div>
+          <h2>{{ 'cv' | translate }}</h2>
+          <p>ارفع ملف PDF أو DOCX حتى 5MB لتتمكن فرق التوظيف من مراجعته.</p>
+          <p *ngIf="!profile" class="upload-hint">
+            احفظ ملفك المهني أولًا لتفعيل رفع السيرة الذاتية.
+          </p>
+          <label class="upload-btn" [class.disabled]="!profile"
+            >{{ 'uploadCv' | translate
+            }}<input
+              type="file"
+              accept=".pdf,.doc,.docx"
+              [disabled]="!profile"
+              (change)="upload($event)"
+          /></label>
+        </div>
+        <div class="section-card score-card">
+          <span class="eyebrow">قوة الملف</span>
+          <div class="score-ring">
+            <strong>{{ profile?.skillsScore || 0 }}</strong
+            ><small>/100</small>
+          </div>
+          <h3>ملفك في الطريق الصحيح</h3>
+          <p>أضف شهادات أو مشاريع أخرى لرفع فرص المطابقة.</p>
+          <div class="score-progress">
+            <span [style.width.%]="profile?.skillsScore || 0"></span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+</div>

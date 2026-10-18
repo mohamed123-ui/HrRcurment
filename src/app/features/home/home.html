@@ -1,0 +1,84 @@
+<div class="home-page" [dir]="language.isArabic() ? 'rtl' : 'ltr'">
+  <header class="public-nav">
+    <a routerLink="/" class="brand"
+      ><span class="brand-mark">S</span><span>SmartRecruitment</span></a
+    >
+    <nav>
+      <a routerLink="/careers">{{ 'careers' | translate }}</a
+      ><a href="#how">{{ language.isArabic() ? 'كيف نعمل' : 'How it works' }}</a
+      ><a href="#about">{{ language.isArabic() ? 'عن المنصة' : 'About' }}</a>
+    </nav>
+    <div class="nav-actions">
+      <app-language-switcher /><a
+        *ngIf="!auth.isLoggedIn()"
+        routerLink="/auth/login"
+        class="nav-login"
+        >{{ 'login' | translate }}</a
+      ><a *ngIf="!auth.isLoggedIn()" routerLink="/auth/register" class="btn btn-primary">{{
+        'register' | translate
+      }}</a
+      ><app-sign-out *ngIf="auth.isLoggedIn()" /><a
+        *ngIf="auth.isLoggedIn()"
+        routerLink="/candidate/profile"
+        class="nav-login"
+        >{{ 'candidateProfile' | translate }}</a
+      ><a
+        *ngIf="auth.isLoggedIn() && auth.hasRole('HR', 'Admin')"
+        routerLink="/hr/dashboard"
+        class="btn btn-primary"
+        >{{ 'hrDashboard' | translate }}</a
+      >
+    </div>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">منصة التوظيف الذكية</span>
+        <h1>الوظيفة المناسبة تبدأ<br /><em>بخطوة واضحة.</em></h1>
+        <p>اكتشف فرصًا مصممة لطموحك، وتابع رحلتك من أول تقديم حتى قرار التوظيف في مكان واحد.</p>
+        <div class="hero-actions">
+          <a routerLink="/careers" class="btn btn-primary btn-lg">استكشف الوظائف <span>←</span></a
+          ><a href="#how" class="text-link">كيف نساعدك؟</a>
+        </div>
+        <div class="hero-proof">
+          <span><b>+240</b> فرصة نشطة</span><span><b>4.9/5</b> تجربة المرشحين</span>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="orb orb-one"></div>
+        <div class="orb orb-two"></div>
+        <div class="dashboard-card">
+          <div class="mini-top"><span>رحلة التوظيف</span><span class="live-dot">● مباشر</span></div>
+          <div class="progress-line">
+            <span class="done"></span><span class="done"></span><span class="current"></span
+            ><span></span>
+          </div>
+          <div class="mini-labels">
+            <span>التقديم</span><span>الفحص</span><span>المقابلة</span><span>القرار</span>
+          </div>
+          <div class="candidate-row">
+            <span class="avatar">س</span>
+            <div><b>سارة أحمد</b><small>مصممة منتجات</small></div>
+            <span class="score">92%</span>
+          </div>
+        </div>
+        <div class="floating-chip chip-top">تمت مطابقة مهاراتك <strong>92%</strong></div>
+        <div class="floating-chip chip-bottom">✓ مقابلة مجدولة</div>
+      </div>
+    </section>
+    <section id="how" class="value-strip">
+      <div>
+        <span class="value-icon">01</span><b>فرص أفضل</b>
+        <p>فلاتر ذكية ووصف واضح لكل فرصة.</p>
+      </div>
+      <div>
+        <span class="value-icon">02</span><b>تقدم مرئي</b>
+        <p>اعرف أين وصلت في كل خطوة.</p>
+      </div>
+      <div>
+        <span class="value-icon">03</span><b>تواصل أسهل</b>
+        <p>كل رسائلك ومواعيدك في مكان واحد.</p>
+      </div>
+    </section>
+  </main>
+</div>

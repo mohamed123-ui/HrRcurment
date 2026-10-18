@@ -1,0 +1,102 @@
+<div class="management-shell" [dir]="language.isArabic() ? 'rtl' : 'ltr'">
+  <header class="page-header">
+    <a class="brand" routerLink="/hr/dashboard"><span>S</span> SmartRecruitment</a>
+    <nav>
+      <a routerLink="/hr/dashboard">Dashboard</a>
+      <a class="active">Manage jobs</a>
+      <a routerLink="/hr/candidates">Candidates</a>
+      <a routerLink="/hr/interviews">Interviews</a>
+    </nav>
+    <app-sign-out />
+  </header>
+
+  <main class="page-content">
+    <section class="intro-row">
+      <div>
+        <span class="eyebrow">HR / ADMIN</span>
+        <h1>Manage jobs</h1>
+        <p>Create, edit, publish, and remove opportunities from the Job API.</p>
+      </div>
+      <button class="primary-button" type="button" (click)="startCreate()">+ New job</button>
+    </section>
+
+    <div *ngIf="notice" class="message success">{{ notice }}</div>
+    <div *ngIf="error" class="message error">{{ error }}</div>
+
+    <div class="management-grid">
+      <section class="panel">
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">LIVE DATA</span>
+            <h2>Published jobs</h2>
+          </div>
+          <span class="count">{{ jobs.length }}</span>
+        </div>
+
+        <div *ngIf="loading" class="empty">Loading jobs...</div>
+        <div *ngIf="!loading && !jobs.length" class="empty">No jobs found.</div>
+        <button class="job-row" *ngFor="let job of jobs" type="button" (click)="startEdit(job)">
+          <span class="job-mark">S</span>
+          <span class="job-copy"
+            ><strong>{{ job.title }}</strong
+            ><small>{{ job.requiredSkills }}</small></span
+          >
+          <span class="job-experience">{{ job.experienceRequired }}+ yrs</span>
+          <span class="job-arrow">›</span>
+        </button>
+      </section>
+
+      <section class="panel editor-panel">
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">{{ selectedJob ? 'EDIT MODE' : 'CREATE MODE' }}</span>
+            <h2>{{ selectedJob ? 'Edit job' : 'New job' }}</h2>
+          </div>
+          <button *ngIf="selectedJob" class="text-button" type="button" (click)="startCreate()">
+            Clear
+          </button>
+        </div>
+
+        <form (ngSubmit)="save()">
+          <label
+            >Job title<input
+              [(ngModel)]="form.title"
+              name="title"
+              placeholder="e.g. Senior Product Designer"
+          /></label>
+          <label
+            >Description<textarea
+              [(ngModel)]="form.description"
+              name="description"
+              rows="5"
+              placeholder="Describe the role and its impact"
+            ></textarea>
+          </label>
+          <label
+            >Required skills<input
+              [(ngModel)]="form.requiredSkills"
+              name="requiredSkills"
+              placeholder="Angular, C#, UX"
+          /></label>
+          <label
+            >Required experience<input
+              [(ngModel)]="form.experienceRequired"
+              name="experienceRequired"
+              type="number"
+              min="0"
+          /></label>
+          <button class="primary-button full-width" type="submit" [disabled]="saving">
+            {{ saving ? 'Saving...' : selectedJob ? 'Update job' : 'Create job' }}
+          </button>
+        </form>
+
+        <div *ngIf="selectedJob" class="danger-actions">
+          <button type="button" (click)="toggle(selectedJob)">
+            {{ selectedJob.isActive === false ? 'Activate job' : 'Pause job' }}
+          </button>
+          <button type="button" (click)="remove(selectedJob)">Delete job</button>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>

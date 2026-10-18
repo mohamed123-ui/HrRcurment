@@ -1,0 +1,73 @@
+<div class="admin-shell" [dir]="language.isArabic() ? 'rtl' : 'ltr'">
+  <header class="page-header">
+    <a class="brand" routerLink="/hr/dashboard">
+      <span>S</span>
+      SmartRecruitment
+    </a>
+
+    <nav>
+      <a routerLink="/hr/dashboard">Dashboard</a>
+      <a routerLink="/hr/jobs">Manage jobs</a>
+      <a routerLink="/hr/candidates">Candidates</a>
+      <a class="active">Add HR</a>
+    </nav>
+
+    <app-sign-out />
+  </header>
+
+  <main class="page-content">
+    <section class="intro-row">
+      <div>
+        <span class="eyebrow">ADMINISTRATION</span>
+        <h1>Add HR member</h1>
+        <p>Create a secure HR account and link it to an HR profile.</p>
+      </div>
+
+      <a class="back-link" routerLink="/hr/dashboard">Back to dashboard</a>
+    </section>
+
+    <section class="form-panel">
+      <div *ngIf="notice" class="message success">{{ notice }}</div>
+      <div *ngIf="error" class="message error">{{ error }}</div>
+
+      <form (ngSubmit)="save()">
+        <label>
+          Full name
+          <input
+            [(ngModel)]="form.Name"
+            name="name"
+            type="text"
+            autocomplete="name"
+            placeholder="Enter HR name"
+          />
+        </label>
+
+        <label>
+          Email address
+          <input
+            [(ngModel)]="form.Email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            placeholder="hr@example.com"
+          />
+        </label>
+
+        <label>
+          Temporary password
+          <input
+            [(ngModel)]="form.Password"
+            name="password"
+            type="password"
+            autocomplete="new-password"
+            placeholder="At least 6 characters"
+          />
+        </label>
+
+        <button class="primary-button" type="submit" [disabled]="saving">
+          {{ saving ? 'Creating...' : 'Create HR account' }}
+        </button>
+      </form>
+    </section>
+  </main>
+</div>

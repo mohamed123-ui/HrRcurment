@@ -1,0 +1,14 @@
+{
+  "routes": [
+    { "path": "/", "title": "Home" },
+    { "path": "/careers", "title": "Careers" },
+    { "path": "/auth/login", "title": "Login" },
+    { "path": "/auth/register", "title": "Register" },
+    { "path": "/candidate/profile", "title": "Candidate Profile" },
+    { "path": "/hr/dashboard", "title": "HR Dashboard" },
+    { "path": "/hr/jobs", "title": "Manage Jobs" },
+    { "path": "/hr/candidates", "title": "Candidates" },
+    { "path": "/hr/interviews", "title": "Interviews" },
+    { "path": "/unauthorized", "title": "Unauthorized" }
+  ]
+}

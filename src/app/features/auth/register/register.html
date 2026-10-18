@@ -1,0 +1,63 @@
+<div class="auth-page" [dir]="language.isArabic() ? 'rtl' : 'ltr'">
+  <section class="auth-art register-art">
+    <a routerLink="/" class="auth-brand"><span>S</span> SmartRecruitment</a>
+    <div class="art-copy">
+      <span class="eyebrow">خطوتك الأولى نحو فرصة أفضل</span>
+      <h1>أنشئ حسابك<br /><em>وابدأ الرحلة.</em></h1>
+      <p>احفظ فرصك المفضلة، قدّم بسهولة، وتابع كل تحديثات طلباتك.</p>
+      <div class="register-points">
+        <span>✓ ملف مهني في دقائق</span><span>✓ وظائف تناسب مهاراتك</span
+        ><span>✓ متابعة شفافة لكل طلب</span>
+      </div>
+    </div>
+  </section>
+  <section class="auth-form-wrap">
+    <div class="auth-form">
+      <div class="auth-language">
+        <app-sign-out *ngIf="auth.isLoggedIn()" /><app-language-switcher />
+      </div>
+      <div class="mobile-brand">
+        <a routerLink="/" class="auth-brand"><span>S</span> SmartRecruitment</a>
+      </div>
+      <span class="eyebrow">{{ 'welcomeBack' | translate }}</span>
+      <h2>{{ 'createAccountTitle' | translate }}</h2>
+      <p class="lead">{{ 'createAccountLead' | translate }}</p>
+      <div *ngIf="errorMessage" class="alert error">{{ errorMessage }}</div>
+      <form [formGroup]="form" (ngSubmit)="onRegister()">
+        <label
+          >{{ 'fullName' | translate
+          }}<input
+            formControlName="Name"
+            placeholder="مثال: سارة أحمد"
+            [class.invalid]="f.Name.touched && f.Name.invalid" /></label
+        ><small class="field-error" *ngIf="f.Name.touched && f.Name.invalid"
+          >اكتب اسمًا من 3 أحرف على الأقل.</small
+        ><label
+          >{{ 'email' | translate
+          }}<input
+            type="email"
+            formControlName="Email"
+            placeholder="name@example.com"
+            [class.invalid]="f.Email.touched && f.Email.invalid" /></label
+        ><small class="field-error" *ngIf="f.Email.touched && f.Email.invalid"
+          >أدخل بريدًا إلكترونيًا صحيحًا.</small
+        ><label
+          >{{ 'password' | translate
+          }}<input
+            type="password"
+            formControlName="Password"
+            placeholder="6 أحرف على الأقل"
+            [class.invalid]="f.Password.touched && f.Password.invalid" /></label
+        ><small class="field-error" *ngIf="f.Password.touched && f.Password.invalid"
+          >كلمة المرور لا تقل عن 6 أحرف.</small
+        ><button class="submit" type="submit" [disabled]="loading">
+          {{ loading ? 'جارٍ إنشاء الحساب…' : ('createAction' | translate) }}
+        </button>
+      </form>
+      <p class="switch">
+        {{ 'alreadyAccount' | translate }}
+        <a routerLink="/auth/login"> {{ 'login' | translate }}</a>
+      </p>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,254 @@
+.interviews-shell {
+  min-height: 100vh;
+  background: #f6f8fc;
+  color: #14213d;
+  font-family: Cairo, Arial, sans-serif;
+}
+.page-header {
+  height: 80px;
+  background: #fff;
+  border-bottom: 1px solid #e6ebf2;
+  display: flex;
+  align-items: center;
+  gap: 42px;
+  padding: 0 max(24px, calc((100% - 1200px) / 2));
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #14213d;
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.brand span {
+  display: grid;
+  place-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: #2563eb;
+  color: #fff;
+}
+.page-header nav {
+  display: flex;
+  gap: 24px;
+  flex: 1;
+}
+.page-header nav a {
+  color: #64748b;
+  font-size: 12px;
+  text-decoration: none;
+}
+.page-header nav .active,
+.page-header nav a:hover {
+  color: #2563eb;
+}
+.page-content {
+  max-width: 1200px;
+  margin: auto;
+  padding: 45px 24px;
+}
+.intro-row {
+  margin-bottom: 28px;
+}
+.eyebrow {
+  display: inline-flex;
+  border-radius: 99px;
+  padding: 6px 11px;
+  background: #eaf1ff;
+  color: #2563eb;
+  font-size: 10px;
+  font-weight: 700;
+}
+.intro-row h1 {
+  font-size: 34px;
+  margin: 12px 0 4px;
+}
+.intro-row p {
+  color: #64748b;
+  font-size: 13px;
+}
+.interview-grid {
+  display: grid;
+  grid-template-columns: 330px 1fr;
+  gap: 18px;
+}
+.panel {
+  background: #fff;
+  border: 1px solid #e3eaf3;
+  border-radius: 17px;
+  padding: 22px;
+}
+.panel h2 {
+  font-size: 19px;
+  margin: 10px 0 22px;
+}
+.schedule-panel form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.schedule-panel label {
+  color: #475569;
+  font-size: 11px;
+}
+.schedule-panel input,
+.schedule-panel select,
+.panel-heading select {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  border: 1px solid #dbe3ee;
+  border-radius: 9px;
+  padding: 10px;
+  font: inherit;
+  outline: 0;
+}
+.schedule-panel input:focus,
+.schedule-panel select:focus {
+  border-color: #2563eb;
+}
+.primary-button {
+  border: 0;
+  border-radius: 9px;
+  padding: 11px 15px;
+  background: #2563eb;
+  color: #fff;
+  cursor: pointer;
+  font: 700 11px Cairo;
+}
+.primary-button:disabled {
+  opacity: 0.6;
+}
+.full-width {
+  width: 100%;
+  margin-top: 8px;
+}
+.panel-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 15px;
+}
+.panel-heading h2 {
+  margin-bottom: 18px;
+}
+.panel-heading select {
+  width: auto;
+  margin-top: 0;
+}
+.interview-card {
+  display: grid;
+  grid-template-columns: 52px 1fr auto;
+  gap: 13px;
+  align-items: center;
+  padding: 15px 0;
+  border-top: 1px solid #eef2f7;
+}
+.date-card {
+  width: 48px;
+  height: 52px;
+  border-radius: 10px;
+  background: #eff6ff;
+  color: #2563eb;
+  text-align: center;
+  padding-top: 4px;
+}
+.date-card strong,
+.date-card small {
+  display: block;
+}
+.date-card strong {
+  font-size: 19px;
+}
+.date-card small {
+  font-size: 10px;
+}
+.interview-copy strong,
+.interview-copy span,
+.interview-copy small {
+  display: block;
+}
+.interview-copy span {
+  margin-top: 3px;
+  color: #2563eb;
+  font-size: 11px;
+}
+.interview-copy small {
+  margin-top: 4px;
+  color: #94a3b8;
+  font-size: 10px;
+}
+.status {
+  border-radius: 99px;
+  padding: 6px 10px;
+  background: #fff7ed;
+  color: #c2410c;
+  font-size: 10px;
+  white-space: nowrap;
+}
+.card-actions {
+  grid-column: 2/-1;
+  display: flex;
+  gap: 6px;
+}
+.card-actions button {
+  border: 0;
+  border-radius: 8px;
+  padding: 7px 9px;
+  background: #ecfdf5;
+  color: #15803d;
+  cursor: pointer;
+  font: 600 10px Cairo;
+}
+.card-actions .cancel {
+  background: #fef2f2;
+  color: #dc2626;
+}
+.empty {
+  padding: 45px 10px;
+  color: #94a3b8;
+  font-size: 12px;
+  text-align: center;
+}
+.message {
+  margin-bottom: 18px;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 12px;
+}
+.success {
+  background: #ecfdf5;
+  color: #15803d;
+}
+.error {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+@media (max-width: 850px) {
+  .interview-grid {
+    grid-template-columns: 1fr;
+  }
+  .page-header nav {
+    gap: 12px;
+  }
+}
+@media (max-width: 620px) {
+  .page-header nav {
+    display: none;
+  }
+  .page-header app-sign-out {
+    margin-inline-start: auto;
+  }
+  .interview-card {
+    grid-template-columns: 48px 1fr;
+  }
+  .interview-card > .status {
+    grid-column: 2;
+  }
+  .card-actions {
+    grid-column: 1/-1;
+  }
+}

@@ -1,0 +1,99 @@
+<div class="interviews-shell" [dir]="language.isArabic() ? 'rtl' : 'ltr'">
+  <header class="page-header">
+    <a class="brand" routerLink="/hr/dashboard"><span>S</span> SmartRecruitment</a>
+    <nav>
+      <a routerLink="/hr/dashboard">Dashboard</a>
+      <a routerLink="/hr/jobs">Manage jobs</a>
+      <a routerLink="/hr/candidates">Candidates</a>
+      <a class="active">Interviews</a>
+    </nav>
+    <app-sign-out />
+  </header>
+
+  <main class="page-content">
+    <section class="intro-row">
+      <div>
+        <span class="eyebrow">HIRING OPERATIONS</span>
+        <h1>Manage interviews</h1>
+        <p>Schedule, review, and record interview outcomes.</p>
+      </div>
+    </section>
+
+    <div *ngIf="notice" class="message success">{{ notice }}</div>
+    <div *ngIf="error" class="message error">{{ error }}</div>
+
+    <div class="interview-grid">
+      <section class="panel schedule-panel">
+        <span class="eyebrow">NEW EVENT</span>
+        <h2>Schedule interview</h2>
+        <form (ngSubmit)="schedule()">
+          <label
+            >Shortlisted candidate<select [(ngModel)]="form.applicationId" name="applicationId">
+              <option [ngValue]="0">Select candidate</option>
+              <option *ngFor="let candidate of shortlisted" [ngValue]="candidate.applicationId">
+                {{ candidate.candidateName }} — {{ candidate.jobTitle }}
+              </option>
+            </select></label
+          >
+          <label
+            >Interview type<select [(ngModel)]="form.type" name="type">
+              <option value="HR">HR</option>
+              <option value="Technical">Technical</option>
+              <option value="Final">Final</option>
+            </select></label
+          >
+          <label
+            >Date and time<input
+              [(ngModel)]="form.scheduledAt"
+              name="scheduledAt"
+              type="datetime-local"
+          /></label>
+          <label
+            >Location or meeting link<input
+              [(ngModel)]="form.location"
+              name="location"
+              placeholder="Room 2 or https://..."
+          /></label>
+          <button class="primary-button full-width" type="submit" [disabled]="saving">
+            {{ saving ? 'Scheduling...' : 'Schedule interview' }}
+          </button>
+        </form>
+      </section>
+
+      <section class="panel list-panel">
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">CALENDAR</span>
+            <h2>Interview list</h2>
+          </div>
+          <select [(ngModel)]="selectedTab" (ngModelChange)="loadInterviews()">
+            <option value="upcoming">Upcoming</option>
+            <option value="past">Past</option>
+            <option value="all">All</option>
+          </select>
+        </div>
+        <div *ngIf="!interviews.length" class="empty">No interviews found.</div>
+        <article class="interview-card" *ngFor="let interview of interviews">
+          <div class="date-card">
+            <strong>{{ interview.scheduledAt | date: 'dd' }}</strong
+            ><small>{{ interview.scheduledAt | date: 'MMM' }}</small>
+          </div>
+          <div class="interview-copy">
+            <strong>{{ interview.candidateName }}</strong
+            ><span>{{ interview.jobTitle }} · {{ interview.type }}</span
+            ><small
+              >{{ interview.scheduledAt | date: 'dd MMM yyyy, HH:mm' }} ·
+              {{ interview.location || 'No location' }}</small
+            >
+          </div>
+          <span class="status">{{ interview.result || interview.status }}</span>
+          <div class="card-actions">
+            <button type="button" (click)="recordResult(interview, 'Passed')">Passed</button
+            ><button type="button" (click)="recordResult(interview, 'Failed')">Failed</button
+            ><button class="cancel" type="button" (click)="cancel(interview)">Cancel</button>
+          </div>
+        </article>
+      </section>
+    </div>
+  </main>
+</div>

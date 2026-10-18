@@ -1,0 +1,143 @@
+<div class="hr-shell" [dir]="language.isArabic() ? 'rtl' : 'ltr'">
+  <aside class="sidebar">
+    <a routerLink="/" class="brand"><span>S</span><b>SmartRecruitment</b></a>
+    <div class="side-label">{{ language.isArabic() ? 'مساحة العمل' : 'Workspace' }}</div>
+    <a class="side-link active" routerLink="/hr/dashboard"
+      ><i>⌂</i> {{ 'hrDashboard' | translate }}</a
+    ><a class="side-link" routerLink="/hr/jobs"
+      ><i>▣</i> {{ language.isArabic() ? 'إدارة الوظائف' : 'Manage jobs' }}
+      <span>{{ jobs.length }}</span></a
+    ><a class="side-link" routerLink="/hr/candidates"
+      ><i>◉</i> {{ language.isArabic() ? 'المرشحون' : 'Candidates' }}</a
+    ><a class="side-link" routerLink="/hr/interviews"
+      ><i>◷</i> {{ language.isArabic() ? 'المقابلات' : 'Interviews' }}</a
+    ><a class="side-link"><i>↗</i> {{ language.isArabic() ? 'العروض' : 'Offers' }}</a>
+    <div class="side-label">الإدارة</div>
+    <a
+      *ngIf="auth.hasRole('Admin', 'admin')"
+      class="side-link"
+      routerLink="/admin/hr/create"
+    >
+      <i>＋</i> إضافة HR
+    </a>
+    <a class="side-link"><i>♙</i> المستخدمون والأدوار</a><a class="side-link"><i>≡</i> التقارير</a>
+    <div class="sidebar-bottom">
+      <app-sign-out />
+    </div>
+  </aside>
+  <main class="hr-content">
+    <header class="hr-header">
+      <div>
+        <span class="eyebrow">{{ 'dashboardArea' | translate }}</span>
+        <h1>صباح الخير، {{ auth.getUser()?.name || 'فريق التوظيف' }} 👋</h1>
+        <p>إليك نبذة سريعة عن حركة التوظيف اليوم.</p>
+      </div>
+      <div class="header-actions">
+        <a
+          *ngIf="auth.hasRole('Admin', 'admin')"
+          class="admin-add-hr"
+          routerLink="/admin/hr/create"
+        >
+          + Add HR
+        </a>
+        <app-language-switcher /><button class="icon-btn">⌕</button
+        ><button class="icon-btn">♢<b>3</b></button>
+        <div class="hr-user">
+          <span class="avatar">{{ (auth.getUser()?.name || 'م').charAt(0) }}</span>
+          <div>
+            <strong>{{ auth.getUser()?.name }}</strong
+            ><small>{{ auth.getUser()?.role }}</small>
+          </div>
+        </div>
+      </div>
+    </header>
+    <section class="kpi-grid">
+      <div class="kpi blue">
+        <span>{{ 'activeJobs' | translate }}</span
+        ><strong>{{ stats.activeJobs }}</strong
+        ><small>↗ 12% هذا الشهر</small>
+      </div>
+      <div class="kpi purple">
+        <span>{{ 'applicants' | translate }}</span
+        ><strong>{{ stats.totalApplicants }}</strong
+        ><small>↗ 18% هذا الشهر</small>
+      </div>
+      <div class="kpi green">
+        <span>{{ 'shortlisted' | translate }}</span
+        ><strong>{{ stats.shortlistedCount }}</strong
+        ><small>↗ 8% هذا الشهر</small>
+      </div>
+      <div class="kpi orange">
+        <span>{{ 'upcomingInterviews' | translate }}</span
+        ><strong>{{ stats.upcomingInterviewsCount }}</strong
+        ><small>اليوم والأسبوع القادم</small>
+      </div>
+    </section>
+    <section class="charts-grid">
+      <div class="surface funnel">
+        <div class="surface-title">
+          <div>
+            <span class="eyebrow">الصورة الكاملة</span>
+            <h2>حالة المتقدمين</h2>
+          </div>
+          <button>هذا الشهر⌄</button>
+        </div>
+        <div class="bars">
+          <div class="bar-row" *ngFor="let item of stats.applicantsByStatus">
+            <span>{{ item.status }}</span>
+            <div class="bar-track"><i [style.width]="getBar(item.count)"></i></div>
+            <b>{{ item.count }}</b>
+          </div>
+          <div *ngIf="!stats.applicantsByStatus.length" class="empty-chart">
+            ستظهر إحصاءات المتقدمين بعد وصول البيانات.
+          </div>
+        </div>
+      </div>
+      <div class="surface interviews">
+        <div class="surface-title">
+          <div>
+            <span class="eyebrow">الجدول</span>
+            <h2>المقابلات القادمة</h2>
+          </div>
+          <a>عرض الكل ←</a>
+        </div>
+        <div *ngIf="!stats.upcomingInterviews.length" class="empty-chart">
+          لا توجد مقابلات مجدولة.
+        </div>
+        <div class="interview" *ngFor="let item of stats.upcomingInterviews">
+          <div class="date">
+            <b>{{ item.scheduledAt | date: 'dd' }}</b
+            ><small>{{ item.scheduledAt | date: 'MMM' }}</small>
+          </div>
+          <div>
+            <strong>{{ item.candidateName }}</strong
+            ><span>{{ item.jobTitle }} · {{ item.type }}</span>
+          </div>
+          <i>⋮</i>
+        </div>
+      </div>
+    </section>
+    <section class="surface jobs-surface">
+      <div class="surface-title">
+        <div>
+          <span class="eyebrow">العمليات</span>
+          <h2>أحدث الوظائف</h2>
+        </div>
+        <a routerLink="/careers">إدارة الوظائف ←</a>
+      </div>
+      <div class="jobs-table">
+        <div class="table-head">
+          <span>المسمى الوظيفي</span><span>المهارات</span><span>الخبرة</span
+          ><span>تاريخ الإضافة</span>
+        </div>
+        <div class="table-row" *ngFor="let job of jobs.slice(0, 5)">
+          <strong>{{ job.title }}</strong
+          ><span>{{ job.requiredSkills }}</span
+          ><span>{{ job.experienceRequired }}+ سنوات</span
+          ><span>{{ job.createdAt | date: 'dd MMM yyyy' }}</span>
+        </div>
+        <div *ngIf="!jobs.length" class="empty-chart">لا توجد وظائف لعرضها.</div>
+      </div>
+    </section>
+  </main>
+</div>
